@@ -39,6 +39,7 @@ def determine_hand(cards):
     hand = hand_dict[str(max(count_list))]
     return hand
 
+
 # 手札を文字列として取得 ex. ABCD, *ZZD
 # cards = input()
 # print(determine_hand(cards))
@@ -52,7 +53,9 @@ test_data = {
     '*SST': 'ThreeCard',
     'KDKK': 'ThreeCard',
     'AAAA': 'FourCard',
-    'D*DD': 'FourCard'}
+    'D*DD': 'FourCard'
+}
+
 for cards, answer in test_data.items():
     determined_hand = determine_hand(cards)
     print(determined_hand == answer, cards, determined_hand, '==', answer)
@@ -73,17 +76,18 @@ print('=========================================================================
 # ("FourCard" ＞ "ThreeCard" ＞ "TwoPair" ＞ "OnePair" ＞ "NoPair")
 # 与えられる文字列は、 高々１つしかワイルドカード * を含みまない
 
-def determine_hand2(cards):
-    wildcard_exists = '*' in cards
-    cards = cards.replace('*', '')
+def determine_hand2(hand):
+    wildcard_exists = '*' in hand
+    hand = hand.replace('*', '')
     # カードの種類数(setは重複を取り除く)
-    set_size = len(set(cards))
+    set_size = len(set(hand))
 
     if set_size == 1:
         return 'FourCard'
     elif set_size == 2:
         # 個数が1のカードが存在した場合 ThreeCard
-        if 1 in [cards.count(card) for card in cards]:
+        # *を外しているため、個数が3であるかを検証すると *SST のパターンで判定ミスをする
+        if 1 in [hand.count(card) for card in hand]:
             return 'ThreeCard'
         else:
             return 'TwoPair'
@@ -91,7 +95,7 @@ def determine_hand2(cards):
         #     return 'ThreeCard'
         # else:
         #     # 1番目のカードの個数が2の場合 TwoPair 1か3の場合 ThreeCard
-        #     return 'TwoPair' if len(list(filter(lambda card: card == cards[0], cards))) == 2 else 'ThreeCard'
+        #     return 'TwoPair' if len(list(filter(lambda card: card == hand[0], hand))) == 2 else 'ThreeCard'
     elif set_size == 3:
         return 'OnePair'
     elif set_size == 4:
@@ -99,9 +103,10 @@ def determine_hand2(cards):
     else:
         return '想定外の手役です'
 
+
 # 手札を文字列として取得 ex. ABCD, *ZZD
-# cards = input()
-# print(determine_hand2(cards))
+# hand = input()
+# print(determine_hand2(hand))
 
 # 関数化してfor文でテストデータを検証する
 test_data = {
@@ -112,7 +117,9 @@ test_data = {
     '*SST': 'ThreeCard',
     'KDKK': 'ThreeCard',
     'AAAA': 'FourCard',
-    'D*DD': 'FourCard'}
-for cards, answer in test_data.items():
-    determined_hand = determine_hand2(cards)
-    print(determined_hand == answer, cards, determined_hand, '==', answer)
+    'D*DD': 'FourCard'
+}
+
+for hand, answer in test_data.items():
+    determined_hand = determine_hand2(hand)
+    print(determined_hand == answer, hand, determined_hand, '==', answer)

@@ -45,6 +45,7 @@ def pluralize(word):
     else:
         return word + 's'
 
+
 # 入力値N
 # input_line = input()
 # N = int(input_line)
