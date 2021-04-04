@@ -118,7 +118,7 @@ reader.on('close', () => {
     // CasherController クラス
     // キャッシャーのインスタンス・タスク・現在の時間の状態を持つ
     // 時間を更新するメソッド キャッシャーを更新するメソッドを持つ
-    class CahserController {
+    class CasherController {
         constructor(props){
             this.cashers = props.cashers
             this.taskLength = props.taskLength
@@ -172,7 +172,7 @@ reader.on('close', () => {
         .sort((a, b) => a - b)
         .map(completeTime => new Casher({ processCompleteTime:  Number(completeTime) }))
 
-    const casherController = new CahserController({
+    const casherController = new CasherController({
         cashers,
         taskLength
     })
