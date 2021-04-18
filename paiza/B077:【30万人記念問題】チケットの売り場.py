@@ -210,6 +210,13 @@ class CounterController:
             self.print_result()
         else:
             self.invoke()
+    # # ループに書き直したバージョン
+    # def invoke(self):
+    #     while(not self.get_is_all_complete()):
+    #         self.set_task()
+    #         self.update_cashers()
+    #         self.time += 1
+    #     self.print_result()
 
 
     def print_result(self):
@@ -257,3 +264,4 @@ counter_controller.invoke()
 # - https://stackoverflow.com/questions/3323001/what-is-the-maximum-recursion-depth-in-python-and-how-to-increase-it
 # 各言語で再帰処理の制限値が設けられているので、これまで動いていたものが唐突に動かなくなる可能性がある
 # 入力例で成功してテストケースすべてで失敗する場合は再帰回数エラーのようにテストケースでの試行回数やデータ量に対応できていない可能性がある
+# 再帰回数エラーの正しい対処法はループに書き直す
