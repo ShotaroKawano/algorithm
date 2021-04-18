@@ -112,6 +112,8 @@ print(complete_time)
 
 # coding: utf-8
 
+import sys
+
 # // casherクラス
 # // 作業にかかる時間・現在のタスクにかかっている時間・作業中かどうかの状態を持つ
 # // 現在のタスクにかかっている時間を更新する処理
@@ -199,7 +201,7 @@ class CounterController:
             counter.update()
 
 
-    def exec(self):
+    def invoke(self):
         self.set_task()
         # print(str(counter_controller))
         self.update_cashers()
@@ -207,7 +209,7 @@ class CounterController:
         if self.get_is_all_complete():
             self.print_result()
         else:
-            self.exec()
+            self.invoke()
 
 
     def print_result(self):
@@ -223,6 +225,12 @@ num_counter, num_people = map(int, input().split())
 processing_time_list = [int(input()) for _ in range(num_counter)]
 counters = []
 
+# 再帰回数制限対策（# RecursionError: maximum recursion depth exceeded in comparison）
+# print(sys.getrecursionlimit())
+# depthのため保険の+1 これがないと入力例3でエラーになる
+sys.setrecursionlimit(num_people * max(processing_time_list) + 1)
+# print(sys.getrecursionlimit())
+
 for processing_time in processing_time_list:
     counters.append(Counter(processing_time))
 
@@ -233,7 +241,8 @@ counter_controller = CounterController(
     sorted_counters
 )
 
-counter_controller.exec()
+counter_controller.invoke()
+
 
 
 
@@ -244,3 +253,7 @@ counter_controller.exec()
 # 複雑性をオブジェクト指向で解決できる まさにオブジェクト至高
 # クラスで書けば単体テストできるのでメンテナンス性が高い
 # jsからpythonに書き換えたので関数の()忘れでバグを生みまくった jsのcallbackで()なしで渡している部分につられた
+# 無制限に再帰処理をしてスタックオーバーフローを起こさないようにpythonでは再帰処理の階層がデフォルトで1000までに制限されている
+# - https://stackoverflow.com/questions/3323001/what-is-the-maximum-recursion-depth-in-python-and-how-to-increase-it
+# 各言語で再帰処理の制限値が設けられているので、これまで動いていたものが唐突に動かなくなる可能性がある
+# 入力例で成功してテストケースすべてで失敗する場合は再帰回数エラーのようにテストケースでの試行回数やデータ量に対応できていない可能性がある
